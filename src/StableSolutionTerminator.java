@@ -25,7 +25,11 @@ public class StableSolutionTerminator implements Terminator
 			if (mBest == null)
 				mBest = pop.get (0);
 			else if (pop.get (0).equals(mBest))
+			{
 				++mcStableGens;
+				if (mcStableGens >= mStableGens)
+					return true;
+			}
 			else
 			{
 				mcStableGens = 0;

@@ -57,11 +57,14 @@ public class Practical2 {
 		 * - You can compare your chromosome and your target string, using for eg. TARGET.charAt(i) == ...
 		 * - Check your integers and doubles (eg. don't use ints for double divisions).
 		 */
+		
 		/**IDEAS
 		*create INTERFACES for fitness evaluation, mutation, termination
-		*evaluation: elitist, probabilistic (likelyhood decreasing for lower fitness value: linearly, exponentially, logarithmically?)
+		*evaluation edit distance
+		*selection elitist, probabilistic (likelyhood decreasing for lower fitness value: linearly, exponentially, logarithmically?)
 		*mutation: uniform (every individual same probability), increasing (less fit individuals should try to adapt faster), constant, decreasing
-		*recombination: ???
+		*recombination: recombine random individuals, recombine individuals with similar fitness
+		*processing random pairing + mutation
 		*termination: fixed number of generations, no change in fittest individual, condition is met
 		*/
 	}

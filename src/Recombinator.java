@@ -1,6 +1,9 @@
-import java.util.ArrayList;
 
+/**
+ * @author martin
+ * Implements recombination process
+ */
 public interface Recombinator 
 {
-	public void recombine (ArrayList <Individual> pop);
+	public abstract Individual recombine (Individual p1, Individual p2);
 }
