@@ -26,6 +26,11 @@ public class Individual {
 		this.fitness = fitness;
 	}
 	
+	public boolean equals (Individual i)
+	{
+		return (this.chromosome.equals (i.chromosome));
+	}
+	
 	public String genoToPhenotype() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(chromosome);

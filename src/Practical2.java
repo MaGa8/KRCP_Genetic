@@ -15,7 +15,7 @@ import java.util.Random;
 public class Practical2 {
 
 	static final String TARGET = "HELLO WORLD";
-	static char[] alphabet = new char[27];
+	static char[] alphabet = new char[27];//why 27???
 
 	/**
 	 * @param args
@@ -61,6 +61,7 @@ public class Practical2 {
 		*create INTERFACES for fitness evaluation, mutation, termination
 		*evaluation: elitist, probabilistic (likelyhood decreasing for lower fitness value: linearly, exponentially, logarithmically?)
 		*mutation: uniform (every individual same probability), increasing (less fit individuals should try to adapt faster), constant, decreasing
+		*recombination: ???
 		*termination: fixed number of generations, no change in fittest individual, condition is met
 		*/
 	}
