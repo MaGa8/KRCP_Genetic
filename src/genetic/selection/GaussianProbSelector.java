@@ -3,7 +3,7 @@ package genetic.selection;
 import genetic.main.Individual;
 
 import java.util.List;
-import java.util.ListIterator;
+import java.util.ListIterator;	
 
 
 public class GaussianProbSelector extends ProbSelector
