@@ -1,5 +1,9 @@
+package genetic.recombination;
+import genetic.main.Individual;
 
-public class AlternatingRecombinator implements Recombinator {
+
+public class HalfRecombinator implements Recombinator 
+{
 
 	public Individual recombine(Individual p1, Individual p2) 
 	{
@@ -7,7 +11,7 @@ public class AlternatingRecombinator implements Recombinator {
 		char[] newChrom = new char [p1.getChromosome().length];
 		for (int cChrom = 0; cChrom < newChrom.length; ++cChrom)
 		{
-			if (cChrom % 2 == 0)
+			if (cChrom < Math.floor (newChrom.length / 2))
 				newChrom[cChrom] = p1.getChromosome()[cChrom];
 			else
 				newChrom[cChrom] = p2.getChromosome()[cChrom];

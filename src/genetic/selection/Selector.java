@@ -1,3 +1,7 @@
+package genetic.selection;
+
+
+import genetic.main.Individual;
 
 import java.util.List;
 

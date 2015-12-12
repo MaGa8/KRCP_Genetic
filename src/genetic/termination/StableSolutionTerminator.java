@@ -1,3 +1,7 @@
+package genetic.termination;
+
+import genetic.main.Individual;
+
 import java.util.ArrayList;
 
 
