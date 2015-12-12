@@ -1,0 +1,72 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+%opening
+\title{Report: Practical 2 \\ Genetic algorithms}
+\author{Michael Glazunov, Martin Gaßner}
+\date{\today}
+
+\begin{document}
+%title page
+\pagenumbering{gobble}
+\maketitle
+
+\newpage
+\pagenumbering{arabic}
+
+\section{Problem definintion}
+In the following document, we are going to describe a genetic algorithm used to generate a desired sequence of characters. We will outline our choices and experiments and the conclusions we draw therefrom.\newline
+Since the model of an individual is given and we did not change its original implementation, we will avoid further discussion.
+
+\section{Approaches to solve the problem}
+\subsection{Modelling}
+We decided to split the program into seperate tasks, modelling seperate activities of a genetic algorithm. These are:
+\begin{enumerate}
+ \item Recombinators model the process of generating a new individual as a combination of the genes of two parents.
+ \item Mutators model the process of mutation a new individual may undergo.
+ \item Evaluators model different fitness functions.
+ \item Selectors model the evolutionary selection and thus exert pressure on the population.
+ \item Terminators indicate when the population has evolved enough.
+\end{enumerate}
+\subsection{Implementation of models}
+Because the above mentionned models are very abstract we now define the concrete implementation of thse concepts.
+
+\subsubsection{Recombinators}
+\begin{enumerate}
+ \item Crossover recombination generates a new genome from a subsequence of the genome of both parents. These subsequences are then attached to form the new genome.
+ \item Alternating recombination generates a new genome by alternatingly taking one gene from one of the parents, adding it to the end of the newly forming genome.
+\end{enumerate}
+
+\subsubsection{Mutators}
+\begin{enumerate}
+ \item Uniform mutation treats all individuals the same, thus mutating one gene of every individual with the same probability using a uniform distribution.
+ \item Fitness dependent mutation is more likely to mutate a gene of an individual with low fitness. The fitness value as given by an evaluator is directly proportional to the probability of mutation.
+\end{enumerate}
+
+\subsubsection{Evaluators}
+\begin{enumerate}
+ \item Edit distance is an adapted version of the actual edit distance: It computes the ratio of the number of correct genes over the number of incorrect genes.
+\end{enumerate}
+
+\subsubsection{Selectors}
+\begin{enumerate}
+ \item Elitist selection sorts the list of individuals and discards the least performing individuals exceeding the size of the population.
+ \item Probabilistic selection selects an individual based on a probability proportional to the individual's fitness value.
+    \subitem Uniform probabilistic selection uses a uniform distribution.
+    \subitem Normal probabilistic selection uses a normal distribution. For this model individuals performing better than average have a higher chance of surviving as opposed to the previous model, whereas individuals with a lower than average fitness value are even more likely to be discarded.
+\end{enumerate}
+
+\subsection{Terminator}
+\begin{enumerate}
+ \item Finite termination generates a finite number of generation until the evolutionary process is terminated.
+ \item Stable solution termination generates as many generations as necessary to produce a stable solution. This means that the algorithm terminates once the best solution does not change anymore over a specified number of generations.
+\end{enumerate}
+
+
+
+
+
+
+\section{Conclusions}
+
+\end{document}
