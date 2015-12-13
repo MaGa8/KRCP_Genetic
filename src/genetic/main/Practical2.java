@@ -52,21 +52,25 @@ public class Practical2 {
 		}
 
 		int numberOfGenerations = 100;
-		Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
+		//Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
+		Terminator terminator = new StableSolutionTerminator(50);
 
 		ArrayList<Individual> pop =  new ArrayList<Individual>(Arrays.asList(population));
 		FitnessEvaluator fitnessEval = new EditDistance(new Individual(TARGET.toCharArray()));
 
-		while (terminator.terminate(pop)) {
+		while (!terminator.terminate(pop)) {
 			for (int i = 0; i < pop.size(); i++)
 				fitnessEval.evaluateFitness(pop.get(i));
-
-			Selector selector = new GaussianProbSelector();
+			
+			//Selector selector = new GaussianProbSelector();
+			Selector selector = new ElitistSelector(100);
 			selector.select(pop);
+			
 			Recombinator recombinator = new HalfRecombinator();
 			Mutator mutator = new FitnessDepMutator();
 			PopProcessor popProc = new RandPopProcessor(mutator, recombinator); 
 			popProc.process(pop);
+			
 		}
 
 		// What does your population look like?
