@@ -1,6 +1,5 @@
 package genetic.mutation;
-import genetic.main.Individual;
-import genetic.main.Practical2;
+import genetic.main.*;
 
 
 public class UniformMutator extends Mutator 
@@ -24,7 +23,7 @@ public class UniformMutator extends Mutator
 		if (mGen.nextDouble() > mThreshold)
 		{
 			char[] chrom = i.getChromosome();
-			char newGene = Practical2.alphabet[mGen.nextInt (Practical2.alphabet.length)];
+			char newGene = GeneticAlgorithm.alphabet[mGen.nextInt (GeneticAlgorithm.alphabet.length)];
 			chrom[mGen.nextInt (chrom.length)] = newGene;
 		}
 	}

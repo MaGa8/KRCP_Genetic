@@ -1,6 +1,7 @@
 package genetic.mutation;
-import genetic.main.Individual;
-import genetic.main.Practical2;
+import genetic.main.*;
+
+import java.lang.reflect.GenericArrayType;
 
 
 public class FitnessDepMutator extends Mutator
@@ -15,7 +16,7 @@ public class FitnessDepMutator extends Mutator
 		if (mGen.nextDouble() > i.getFitness())
 		{
 			char[] chrom = i.getChromosome();
-			char newGene = Practical2.alphabet[mGen.nextInt (Practical2.alphabet.length)];
+			char newGene = GeneticAlgorithm.alphabet[mGen.nextInt (GeneticAlgorithm.alphabet.length)];
 			chrom[mGen.nextInt (chrom.length)] = newGene;
 		}
 	}

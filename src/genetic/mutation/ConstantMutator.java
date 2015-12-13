@@ -1,7 +1,5 @@
 package genetic.mutation;
-import genetic.main.Individual;
-import genetic.main.Practical2;
-
+import genetic.main.*;
 
 public class ConstantMutator extends Mutator
 {
@@ -19,10 +17,10 @@ public class ConstantMutator extends Mutator
 	{
 		char[] chrom = i.getChromosome();
 		for (int curGene = 0; curGene < i.getChromosome().length; curGene++) {
-	           if (Math.random() <= mutationRate) {
-        	        int letter = (int)(Math.random() * Practical2.alphabet.length);
-                	chrom[curGene] = Practical2.alphabet[letter];
-		   		}
+			if (Math.random() <= mutationRate) {
+				int letter = (int) (Math.random() * GeneticAlgorithm.alphabet.length);
+				chrom[curGene] = GeneticAlgorithm.alphabet[letter];
+			}
 		}
 	}
 
