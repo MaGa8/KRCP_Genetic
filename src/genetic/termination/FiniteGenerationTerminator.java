@@ -16,8 +16,8 @@ public class FiniteGenerationTerminator implements Terminator {
 	{
 		--mGenerations;
 		if (mGenerations == 0)
-			return false;
-		return true;
+			return true;
+		return false;
 	}
 	
 	private int mGenerations;

@@ -73,6 +73,8 @@ public class Practical2 {
 			
 		}
 
+		System.out.println();
+		System.out.println ("After");
 		// What does your population look like?
 		for (int i = 0; i < pop.size(); i++) {
 			System.out.println(pop.get(i).genoToPhenotype());
