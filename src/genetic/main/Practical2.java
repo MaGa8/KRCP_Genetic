@@ -31,7 +31,7 @@ public class Practical2 {
 	 */
 	public static void main(String[] args) {
 
-		int popSize = 50000;
+		int popSize = 100;
 		for (char c = 'A'; c <= 'Z'; c++) {
 			alphabet[c - 'A'] = c;
 		}
@@ -52,7 +52,7 @@ public class Practical2 {
 			System.out.println(population[i].genoToPhenotype());
 		}
 
-		int numberOfGenerations = 100;
+		int numberOfGenerations = 10000;
 		Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
 		//Terminator terminator = new StableSolutionTerminator(10);
 
@@ -65,7 +65,7 @@ public class Practical2 {
 			
 			//System.out.println ("new generation size " + pop.size());
 			//Selector selector = new GaussianProbSelector();
-			System.out.println ("Highest fitness " + pop.get(0).fitness);
+			//System.out.println ("Highest fitness " + pop.get(0).fitness);
 			
 			if (pop.get(0).getChromosome().equals ("HELLO WORLD"))
 				System.out.println ("Success");
@@ -84,14 +84,14 @@ public class Practical2 {
 				if (i.getFitness() > max)
 					max = i.getFitness();
 			}
-			System.out.println ("Highest fitness after recombination " + max);
+			//System.out.println ("Highest fitness after recombination " + max);
 			
-			Selector selector = new ElitistSelector (100);
-			//Selector selector = new ProbSelector();
+			//Selector selector = new ElitistSelector (100);
+			Selector selector = new UniformProbSelector (0.3);
 			selector.select(pop);
 			
 			//printPop (pop);
-			System.out.println();
+			//System.out.println();
 		}
 
 		System.out.println();
