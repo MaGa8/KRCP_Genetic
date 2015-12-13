@@ -30,7 +30,7 @@ public class Practical2 {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
+		
 		int numberOfGenerations = 1000;
 		FitnessEvaluator fitness  = new EditDistance(new Individual(TARGET.toCharArray()));
 		Recombinator recombinator = new HalfRecombinator();
@@ -41,6 +41,7 @@ public class Practical2 {
 		PopProcessor popProc = new RandPopProcessor(mutator, recombinator);
 		Selector selector = new ElitistSelector(100);
 		Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
+
 
 		GeneticAlgorithm ga = new GeneticAlgorithm(numberOfGenerations,
 													100,
