@@ -30,9 +30,11 @@ public class RandPopProcessor extends PopProcessor
 	 		pairs.set (swap, tmp);
 		}
 		
-		for (int cPair = 0; cPair < pop.size() - 1; cPair += 2)
+		for (int cPair = 0; cPair < pairs.size() - 1; cPair += 2)
 		{
-			Individual newBorn = recombine (pop.get (cPair), pop.get (cPair + 1));
+			//Individual newBorn = recombine (pop.get (cPair), pop.get (cPair + 1));
+			int iparent1 = pairs.get(cPair), iparent2 = pairs.get(cPair + 1);
+			Individual newBorn = recombine (pop.get (iparent1), pop.get(iparent2));
 			mutate (newBorn);
 			pop.add (newBorn);
 		}

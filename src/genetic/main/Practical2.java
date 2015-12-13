@@ -31,7 +31,7 @@ public class Practical2 {
 	 */
 	public static void main(String[] args) {
 
-		int popSize = 100;
+		int popSize = 50000;
 		for (char c = 'A'; c <= 'Z'; c++) {
 			alphabet[c - 'A'] = c;
 		}
@@ -39,7 +39,8 @@ public class Practical2 {
 		Random generator = new Random(System.currentTimeMillis());
 		Individual[] population = new Individual[popSize];
 		// we initialize the population with random characters
-		for (int i = 0; i < popSize; i++) {
+		for (int i = 0; i < popSize; i++) 
+		{
 			char[] tempChromosome = new char[TARGET.length()];
 			for (int j = 0; j < TARGET.length(); j++) {
 				tempChromosome[j] = alphabet[generator.nextInt(alphabet.length)]; //choose a random letter in the alphabet
@@ -52,33 +53,51 @@ public class Practical2 {
 		}
 
 		int numberOfGenerations = 100;
-		//Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
-		Terminator terminator = new StableSolutionTerminator(50);
+		Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
+		//Terminator terminator = new StableSolutionTerminator(10);
 
 		ArrayList<Individual> pop =  new ArrayList<Individual>(Arrays.asList(population));
-		FitnessEvaluator fitnessEval = new EditDistance(new Individual(TARGET.toCharArray()));
+		FitnessEvaluator fitnessEval = new EditDistance (new Individual(TARGET.toCharArray()));
 
 		while (!terminator.terminate(pop)) {
 			for (int i = 0; i < pop.size(); i++)
 				fitnessEval.evaluateFitness(pop.get(i));
 			
+			//System.out.println ("new generation size " + pop.size());
 			//Selector selector = new GaussianProbSelector();
-			Selector selector = new ElitistSelector(100);
-			selector.select(pop);
+			System.out.println ("Highest fitness " + pop.get(0).fitness);
+			
+			if (pop.get(0).getChromosome().equals ("HELLO WORLD"))
+				System.out.println ("Success");
 			
 			Recombinator recombinator = new HalfRecombinator();
+			//Recombinator recombinator = new AlternatingRecombinator();
+			//Recombinator recombinator = new SingletonRecombinator();
 			Mutator mutator = new FitnessDepMutator();
+			//Mutator mutator = new UniformMutator(0.2);
 			PopProcessor popProc = new RandPopProcessor(mutator, recombinator); 
 			popProc.process(pop);
 			
+			double max = 0;
+			for (Individual i : pop)
+			{
+				if (i.getFitness() > max)
+					max = i.getFitness();
+			}
+			System.out.println ("Highest fitness after recombination " + max);
+			
+			Selector selector = new ElitistSelector (100);
+			//Selector selector = new ProbSelector();
+			selector.select(pop);
+			
+			//printPop (pop);
+			System.out.println();
 		}
 
 		System.out.println();
 		System.out.println ("After");
 		// What does your population look like?
-		for (int i = 0; i < pop.size(); i++) {
-			System.out.println(pop.get(i).genoToPhenotype());
-		}
+		printPop (pop);
 
 
 		// do your own cool GA here
@@ -107,7 +126,11 @@ public class Practical2 {
 		*processing random pairing + mutation
 		*termination: fixed number of generations, no change in fittest individual, condition is met
 		*/
-
-
+	}
+	
+	public static void printPop (ArrayList <Individual> pop)
+	{
+		for (Individual i : pop)
+			System.out.println (i.genoToPhenotype());
 	}
 }

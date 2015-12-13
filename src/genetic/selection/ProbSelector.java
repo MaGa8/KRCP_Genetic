@@ -25,6 +25,8 @@ public class ProbSelector implements Selector
 	
 	public void select(List<Individual> l) 
 	{
+		
+		
 		for (ListIterator<Individual> il = l.listIterator(); il.hasNext(); )
 		{
 			Individual i = il.next();
