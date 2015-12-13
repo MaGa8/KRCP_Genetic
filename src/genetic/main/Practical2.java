@@ -1,5 +1,13 @@
 package genetic.main;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
+import genetic.evaluation.*;
+import genetic.termination.*;
+import genetic.selection.*;
+import genetic.recombination.*;
+import genetic.mutation.*;
+import genetic.processing.*;
 
 /**
  * Some very basic stuff to get you started. It shows basically how each
@@ -22,6 +30,7 @@ public class Practical2 {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+
 		int popSize = 100;
 		for (char c = 'A'; c <= 'Z'; c++) {
 			alphabet[c - 'A'] = c;
@@ -41,6 +50,30 @@ public class Practical2 {
 		for (int i = 0; i < population.length; i++) {
 			System.out.println(population[i].genoToPhenotype());
 		}
+
+		int numberOfGenerations = 100;
+		Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
+
+		ArrayList<Individual> pop =  new ArrayList<Individual>(Arrays.asList(population));
+		FitnessEvaluator fitnessEval = new EditDistance(new Individual(TARGET.toCharArray()));
+
+		while (terminator.terminate(pop)) {
+			for (int i = 0; i < pop.size(); i++)
+				fitnessEval.evaluateFitness(pop.get(i));
+
+			Selector selector = new GaussianProbSelector();
+			selector.select(pop);
+			Recombinator recombinator = new HalfRecombinator();
+			Mutator mutator = new FitnessDepMutator();
+			PopProcessor popProc = new RandPopProcessor(mutator, recombinator); 
+			popProc.process(pop);
+		}
+
+		// What does your population look like?
+		for (int i = 0; i < pop.size(); i++) {
+			System.out.println(pop.get(i).genoToPhenotype());
+		}
+
 
 		// do your own cool GA here
 		/**
@@ -68,5 +101,7 @@ public class Practical2 {
 		*processing random pairing + mutation
 		*termination: fixed number of generations, no change in fittest individual, condition is met
 		*/
+
+
 	}
 }
