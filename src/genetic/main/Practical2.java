@@ -52,13 +52,13 @@ public class Practical2 {
 			System.out.println(population[i].genoToPhenotype());
 		}
 
-		int numberOfGenerations = 10000;
+		int numberOfGenerations = 1000;
 		Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
 		//Terminator terminator = new StableSolutionTerminator(10);
 
 		ArrayList<Individual> pop =  new ArrayList<Individual>(Arrays.asList(population));
 		FitnessEvaluator fitnessEval = new EditDistance (new Individual(TARGET.toCharArray()));
-
+		
 		while (!terminator.terminate(pop)) {
 			for (int i = 0; i < pop.size(); i++)
 				fitnessEval.evaluateFitness(pop.get(i));
@@ -87,7 +87,7 @@ public class Practical2 {
 			//System.out.println ("Highest fitness after recombination " + max);
 			
 			//Selector selector = new ElitistSelector (100);
-			Selector selector = new UniformProbSelector (0.3);
+			Selector selector = new UniformProbSelector (0.12);
 			selector.select(pop);
 			
 			//printPop (pop);
