@@ -73,11 +73,11 @@ public class ParameterTest
 		mData = new ArrayList <ArrayList <DataSet>>();
 	}
 	
-	public boolean canAdvance (ArrayList <Integer> counters, ArrayList <Integer> boundaries)
+	public boolean canAdvance (Integer[] counters, Integer[] boundaries)
 	{
-		for (int cElem = 0; cElem < counters.size() && cElem < boundaries.size(); ++cElem)
+		for (int cElem = 0; cElem < counters.length && cElem < boundaries.length; ++cElem)
 		{
-			if (!counters.get(cElem).equals (boundaries.get (cElem)))
+			if (!counters[cElem].equals (boundaries[cElem]))
 				return true;
 		}
 		return false;
@@ -164,25 +164,26 @@ public class ParameterTest
 		checkForExceptions();
 		initializeCounters();
 		
-		ArrayList <Integer> counters, boundaries;
+		//ArrayList <Integer> counters, boundaries;
+		Integer[] counters, boundaries;
 		
-		counters = new ArrayList <Integer>();
-		counters.add (cEvaluator);
-		counters.add (cMutator);
-		counters.add (cProcessor);
-		counters.add (cRecombinator);
-		counters.add (cSelector);
-		counters.add (cSizes);
-		counters.add (cNumGenerations);
+		counters = new Integer[7];
+		counters[0] = cEvaluator;
+		counters[1] = cMutator;
+		counters[2] = cProcessor;
+		counters[3] = cRecombinator;
+		counters[4] = cSelector;
+		counters[5] = cSizes;
+		counters[6] = cNumGenerations;
 		
-		boundaries = new ArrayList <Integer>();
-		boundaries.add (new Integer (mEvaluators.size()));
-		boundaries.add (new Integer (mMutators.size()));
-		boundaries.add (new Integer (mProcessors.size()));
-		boundaries.add (new Integer (mRecombinators.size()));
-		boundaries.add (new Integer (mSelectors.size()));
-		boundaries.add (new Integer (mPopSizes.size()));
-		boundaries.add (new Integer (mNumGenerations.size()));
+		boundaries = new Integer[7];
+		boundaries[0] = new Integer (mEvaluators.size());
+		boundaries[1] = new Integer (mMutators.size());
+		boundaries[2] = new Integer (mProcessors.size());
+		boundaries[3] = new Integer (mRecombinators.size());
+		boundaries[4] = new Integer (mSelectors.size());
+		boundaries[5] = new Integer (mPopSizes.size());
+		boundaries[6] = new Integer (mNumGenerations.size());
 		
 		boolean allPermutations = false;
 		
@@ -193,7 +194,8 @@ public class ParameterTest
 			for (int cRepetitions = 0; cRepetitions < mRepetitions; ++cRepetitions)
 			{
 				launchThreads (threads, mRepetitions - cRepetitions);
-				synchronized (this) {
+				synchronized (this) 
+				{
 					wait();
 				}
 				cleanUpThreads(threads, temp);
@@ -233,16 +235,16 @@ public class ParameterTest
 		}
 	}
 	
-	public void advance (int position, ArrayList <Integer> counters, ArrayList <Integer> boundaries)
+	public void advance (int position, Integer[] counters, Integer[] boundaries)
 	{
-		if (position < counters.size() && position < boundaries.size())
+		if (position < counters.length && position < boundaries.length)
 		{
-			Integer counter = counters.get(position);
-			if (counter.compareTo (boundaries.get (position)) < 0)
-				counters.set(position, counter + 1);
+			Integer counter = counters[position];
+			if (counter.compareTo (boundaries[position]) < 0)
+				counters[position] =  counter + 1;
 			else
 			{
-				counters.set (position, 0);
+				counters[position] = 0;
 				advance (position + 1, counters, boundaries);
 			}
 		}
