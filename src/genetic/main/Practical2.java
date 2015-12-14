@@ -36,15 +36,17 @@ public class Practical2 {
 		Recombinator recombinator = new HalfRecombinator();
 		//Recombinator recombinator = new AlternatingRecombinator();
 		//Recombinator recombinator = new SingletonRecombinator();
-		Mutator mutator = new FitnessDepMutator();
-		//Mutator mutator = new UniformMutator(0.2);
+		//Mutator mutator = new FitnessDepMutator();
+		Mutator mutator = new UniformMutator(0.2);
 		PopProcessor popProc = new RandPopProcessor(mutator, recombinator);
-		Selector selector = new ElitistSelector(100);
-		Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
+		//Selector selector = new ElitistSelector(100);
+		Selector selector = new DynamicProbSelector(550, 1.5);
+		//Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
+		Terminator terminator = new StableSolutionTerminator(500);
 
 
 		GeneticAlgorithm ga = new GeneticAlgorithm(numberOfGenerations,
-													100,
+													1000,
 													TARGET,
 													fitness,
 													popProc,

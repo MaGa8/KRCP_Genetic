@@ -44,6 +44,8 @@ public abstract class ProbSelector implements Selector
 				minFit = i.getFitness();
 		}
 		
+		int removedIndivs = 0;
+		
 		for (ListIterator<Individual> il = l.listIterator(); il.hasNext(); )
 		{
 			Individual i = il.next();
@@ -51,8 +53,10 @@ public abstract class ProbSelector implements Selector
 			double randFitness = (maxFit - minFit) * getRand() + minFit;
 			double relativeConst = (maxFit - minFit) * mConstantProb;
 			//integrated const prob
-			if (randFitness > i.getFitness() + relativeConst)
+			if (randFitness > i.getFitness() + relativeConst) {
 				il.remove();
+				removedIndivs++;
+			}
 		}
 	}
 	
@@ -62,5 +66,5 @@ public abstract class ProbSelector implements Selector
 	public abstract double getRand();
 	
 	protected Random mGen;
-	private double mConstantProb;
+	protected double mConstantProb;
 }
