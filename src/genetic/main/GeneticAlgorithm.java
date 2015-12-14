@@ -68,7 +68,7 @@ public class GeneticAlgorithm {
 
             //System.out.println("Highest fitness " + pop.get(0).fitness);
 
-            if (pop.get(0).getChromosome().equals("HELLO WORLD"))
+            if (!pop.isEmpty() && pop.get(0).getChromosome().equals("HELLO WORLD"))
                 System.out.println("Success");
 
             processor.process(pop);

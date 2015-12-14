@@ -251,6 +251,13 @@ public class ParameterTest
 				counters[position] = 0;
 				advance (position + 1, counters, boundaries);
 			}
+			if (position == 0)
+			{
+				System.out.print ("Advance to ");
+				for (Integer i : counters)
+					System.out.print (i);
+				System.out.println();
+			}
 		}
 	}
 	

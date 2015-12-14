@@ -31,7 +31,7 @@ public class Practical2 {
 	 */
 	public static void main(String[] args) {
 		
-		ParameterTest paramTest = new ParameterTest(TARGET, 500, 20);
+		ParameterTest paramTest = new ParameterTest(TARGET, 10, 5);
 
 		MutatorFactory mutatorFactory = new MutatorFactory(0.1);
 		ArrayList<Mutator> mutators = new ArrayList<Mutator>();
