@@ -39,6 +39,8 @@ public class Practical2 {
 		//Mutator mutator = new FitnessDepMutator();
 		Mutator mutator = new UniformMutator(0.2);
 		PopProcessor popProc = new RandPopProcessor(mutator, recombinator);
+		//PopProcessor popProc = new ChunkPopProcessor(mutator, recombinator, 5);
+		
 		//Selector selector = new ElitistSelector(100);
 		Selector selector = new DynamicProbSelector(550, 1.5);
 		//Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
@@ -61,6 +63,7 @@ public class Practical2 {
 		System.out.println ("After");
 		// What does your population look like?
 		ga.printPop();
+		System.out.println (ga.getGenerationsNeeded() + " generations");
 
 
 		// do your own cool GA here

@@ -75,12 +75,18 @@ public class GeneticAlgorithm {
             System.out.println("Highest fitness after recombination " + max);
 
             selector.select(pop);
+            ++numberOfGenerations;
         }
     }
 
     public void printPop() {
         for (Individual i : pop)
             System.out.println(i.genoToPhenotype());
+    }
+    
+    public int getGenerationsNeeded()
+    {
+    	return numberOfGenerations;
     }
 
     private int populationSize;

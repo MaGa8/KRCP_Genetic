@@ -9,27 +9,51 @@ import java.util.Random;
 
 public class RandPopProcessor extends PopProcessor 
 {
+	public static final int mMod = 10000;
+	
+	
+	
 	public RandPopProcessor (Mutator mut, Recombinator recomb)
 	{
 		super (mut, recomb);
+		++mObjectCount;
+		mGen = new Random (System.currentTimeMillis() / mObjectCount % mMod);
 	}
 	
-	@Override
+	/**
+	 * @param pop population
+	 * Matches random pairs in pop
+	 * pairs produce new offspring stored in pop
+	 */
 	public void process (ArrayList<Individual> pop) 
+	{
+		LinkedList <Integer> indices = getIndexList (pop);
+		shuffleList (indices);
+		mate (indices, pop);
+	}
+	
+	public LinkedList <Integer> getIndexList (ArrayList <Individual> pop)
 	{
 		LinkedList <Integer> pairs = new LinkedList<Integer>();
 		for (int cPop = 0; cPop< pop.size(); ++cPop)
 			pairs.add (new Integer (cPop));
-		
-		Random gen = new Random ();
-		for (int cPop = 0; cPop < pop.size() - 1; ++cPop)
+		return pairs;
+	}
+	
+	public void shuffleList (LinkedList <Integer> indices)
+	{
+		for (int cIndex = 0; cIndex < indices.size() - 1; ++cIndex)
 		{
-			int swap = gen.nextInt (pop.size() - cPop - 1) + cPop + 1;
-			Integer tmp = pairs.get (cPop);
-	 		pairs.set (cPop, pairs.get (swap));
-	 		pairs.set (swap, tmp);
+			//swap current index with one of the following indices
+			int swap = mGen.nextInt (indices.size() - cIndex - 1) + cIndex + 1;
+			Integer tmp = indices.get (cIndex);
+	 		indices.set (cIndex, indices.get (swap));
+	 		indices.set (swap, tmp);
 		}
-		
+	}
+	
+	public void mate (LinkedList <Integer> pairs, ArrayList <Individual> pop)
+	{
 		for (int cPair = 0; cPair < pairs.size() - 1; cPair += 2)
 		{
 			//Individual newBorn = recombine (pop.get (cPair), pop.get (cPair + 1));
@@ -38,7 +62,9 @@ public class RandPopProcessor extends PopProcessor
 			mutate (newBorn);
 			pop.add (newBorn);
 		}
-		
 	}
-
+	
+	protected Random mGen;
+	
+	private static int mObjectCount = 0;
 }
