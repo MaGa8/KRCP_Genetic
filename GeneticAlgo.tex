@@ -27,6 +27,7 @@ We decided to split the program into seperate tasks, modelling seperate activiti
  \item Evaluators model different fitness functions.
  \item Selectors model the evolutionary selection and thus exert pressure on the population.
  \item Terminators indicate when the population has evolved enough.
+ \item Population processors use a mutator and a recombinator to produce a new generation in a specific way.
 \end{enumerate}
 \subsection{Implementation of models}
 Because the above mentionned models are very abstract we now define the concrete implementation of thse concepts.
@@ -41,7 +42,7 @@ Because the above mentionned models are very abstract we now define the concrete
 \begin{enumerate}
  \item Uniform mutation treats all individuals the same, thus mutating one gene of every individual with the same probability using a uniform distribution.
  \item Fitness dependent mutation is more likely to mutate a gene of an individual with low fitness. The fitness value as given by an evaluator is directly proportional to the probability of mutation.
- \item Constant mutation allows to set the constant rate of the mutation per each individual
+ \item Constant mutation allows to set the constant rate of the mutation for each gene of each individual
 \end{enumerate}
 
 \subsubsection{Evaluators}
@@ -55,6 +56,7 @@ Because the above mentionned models are very abstract we now define the concrete
  \item Probabilistic selection selects an individual based on a probability proportional to the individual's fitness value.
     \subitem Uniform probabilistic selection uses a uniform distribution.
     \subitem Normal probabilistic selection uses a normal distribution. For this model individuals performing better than average have a higher chance of surviving as opposed to the previous model, whereas individuals with a lower than average fitness value are even more likely to be discarded.
+  \item Dynamic probabilistic selection uses a uniform distribution. Additionally it increases the likelyhood for every individual not to be eliminated as the size of the population approaches a threshold. If the population falls below the threshold no individuals will be eliminated.
 \end{enumerate}
 
 \subsection{Terminator}
@@ -63,13 +65,22 @@ Because the above mentionned models are very abstract we now define the concrete
  \item Stable solution termination generates as many generations as necessary to produce a stable solution. This means that the algorithm terminates once the best solution does not change anymore over a specified number of generations.
 \end{enumerate}
 
-
+\subsection{Population processors}
+\begin{enumerate}
+ \item Random processing matches random pair of individuals to produce offspring.
+ \item Chunked random processing sorts the population according to their fitness and divides it into chunks. Then random pairing occurs within those chunks to produce offspring.
+\end{enumerate}
 
 \section{Observations}
-
-
-
-
-\section{Conclusions}
+The following observations are based on the author's experiences while experimenting with different parameters and on some data. This data was sent along with this documentation as .txt files.
+\subsection{Maintaining the population}
+Especially the non-dynamic probabilistic selectors caused the population to either grow to very large numbers or to shrink to just a tiny set of individuals. While the first scenario is undesirable, simply because it becomes nearly impossible to compute (since genes also converge slower if the population is larger), the second scenario does not produce a solution either, because the diversity of genes is too limited. In constrast, the dynamic probabilistic selector performs very well in every situation.
+\subsection{Maintining diversity}
+On the one hand this topic is related to the size of the population as mentionned beforehand. On the other hand, it also depends on how new individuals are generated. When generating individuals, the pairing can be adjusted. Our data shows, that the chunked random processor accelerated finding a solution significantly faster while a similar level of quality is maintained (i.e. final fitness of the best individual). We found there were probably two reasons: One is that individuals with a high fitness are recombined isolated from the others, thus the fitness of the overall population increases faster and their genes spread ever quicker. The other is that there are multiple sub-populations more or less kept apart, which also increases diverity, which may introduce new genes into sub-populations with higher fitness from sub-populations with lower fitness as the lower-fitness-populations evolve. Another way is to change how recombination happens. In this case however the data does not show any difference between the crossover recombination and the alternating recombination. Completely omitting recombination completely made the algorithm very slow to converge (up to a point that we did not want to test it repeatedly).
+\subsection{Mutation rate}
+According to the data we collected we could observe that the resulting quality of the algorithm and its speed kept increasing as we increased the mutation rate until a certain point when this trend was reversed again (at about 20\%). This shows that a low mutation rate results in too little diversity for the algorithm to terminate successful. Yet a mutation rate that is too high changes the population too much so it does not converge at a good result because the population's individuals are constantly being changed and thus kept from reaching a satisfyable state.
+\subsection{Use of mutators}
+As the data shows, the uniform mutator made the algorithm converge much faster than the others. However its result is by far inferior in quality than the result's of the other mutators, which are largely similar. This can be explained easily, since the uniform mutator only changes one gene at a time at a constant rate which is the same for each individual. This means individuals with high fitness are changed as much as any other, possibly not improving their fitness. It also means that individual with very low fitness are not changed enough in order to evolve quickly to gain higher fitness.
+\subsection{Size of the starting population}
 
 \end{document}

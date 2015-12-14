@@ -31,11 +31,11 @@ public class Practical2 {
 	 */
 	public static void main(String[] args) 
 	{
-		//testMutationRate (50);
+		testMutationRate (50);
 		//testPopSize (50);
 		//testRecombinator(50);
 		//testMutator(50);
-		testProcessor(50);
+		//testProcessor(50);
 		
 		
 		/*
@@ -165,7 +165,7 @@ public class Practical2 {
 		Terminator terminate = new StableSolutionTerminator(250);
 		Recombinator recombine = new HalfRecombinator();
 		
-		for (double cMutRate = 0.05; cMutRate <= 0.75; cMutRate += 0.025)
+		for (double cMutRate = 0.00; cMutRate <= 0.75; cMutRate += 0.025)
 		{
 			Mutator mut = new ConstantMutator(cMutRate);
 			
@@ -238,7 +238,7 @@ public class Practical2 {
 		Terminator terminate = new StableSolutionTerminator(250);
 		
 		String des = null;
-		for (int cRecombine = 0; cRecombine < 2; ++cRecombine)
+		for (int cRecombine = 0; cRecombine < 3; ++cRecombine)
 		{
 			Recombinator recombine = null;
 			
@@ -249,6 +249,11 @@ public class Practical2 {
 			break;
 			case 1: recombine = new AlternatingRecombinator();
 					des = new String ("alternating");
+			break;
+			case 2: recombine = new SingletonRecombinator();
+					des = new String ("no recombination");
+					break;
+					
 			}
 			
 			Mutator mut = new ConstantMutator(mutationRate);
