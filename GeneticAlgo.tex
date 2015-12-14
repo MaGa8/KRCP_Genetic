@@ -33,7 +33,7 @@ Because the above mentionned models are very abstract we now define the concrete
 
 \subsubsection{Recombinators}
 \begin{enumerate}
- \item Crossover recombination generates a new genome from a subsequence of the genome of both parents. These subsequences are then attached to form the new genome.
+ \item Halfover recombination generates a new genome from a subsequence of the genome of both parents. These subsequences are then attached to form the new genome.
  \item Alternating recombination generates a new genome by alternatingly taking one gene from one of the parents, adding it to the end of the newly forming genome.
 \end{enumerate}
 
@@ -41,6 +41,7 @@ Because the above mentionned models are very abstract we now define the concrete
 \begin{enumerate}
  \item Uniform mutation treats all individuals the same, thus mutating one gene of every individual with the same probability using a uniform distribution.
  \item Fitness dependent mutation is more likely to mutate a gene of an individual with low fitness. The fitness value as given by an evaluator is directly proportional to the probability of mutation.
+ \item Constant mutation allows to set the constant rate of the mutation per each individual
 \end{enumerate}
 
 \subsubsection{Evaluators}
@@ -63,6 +64,8 @@ Because the above mentionned models are very abstract we now define the concrete
 \end{enumerate}
 
 
+
+\section{Observations}
 
 
 
