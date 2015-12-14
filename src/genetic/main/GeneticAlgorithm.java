@@ -19,7 +19,12 @@ import java.util.Random;
 
 public class GeneticAlgorithm {
 
-    public GeneticAlgorithm(int populationSize,
+    public static String getParamDescriptionKeys()
+    {
+    	return new String ("Population size|number generations|evaluator|processor|selector|terminator");
+    }
+	
+	public GeneticAlgorithm(int populationSize,
                             int numberOfGenerations,
                             String target,
                             FitnessEvaluator fitness,
@@ -50,7 +55,9 @@ public class GeneticAlgorithm {
                 tempChromosome[j] = alphabet[generator.nextInt(alphabet.length)]; 
             pop.add (new Individual(tempChromosome));
         }
-
+        //reset
+        numberOfGenerations = 0;
+        mFinalFitness = 0.0;
         
     }
 
@@ -76,6 +83,8 @@ public class GeneticAlgorithm {
             selector.select(pop);
             ++numberOfGenerations;
         }
+        if (!pop.isEmpty())
+        	mFinalFitness = pop.get(0).getFitness();
     }
 
     public void printPop() {
@@ -83,13 +92,29 @@ public class GeneticAlgorithm {
             System.out.println(i.genoToPhenotype());
     }
     
+    public String getParamDescription()
+    {
+    	return new String (	populationSize + "|" + 
+    						numberOfGenerations + "|" +
+    						fitness.toString() + "|" + 
+    						processor.toString() + "|" + 
+    						selector.toString() + "|" + 
+    						terminator.toString());
+    }
+    
     public int getGenerationsNeeded()
     {
     	return numberOfGenerations;
     }
+    
+    public double getFinalFitness()
+    {
+    	return mFinalFitness;
+    }
 
     private int populationSize;
     private int numberOfGenerations;
+    private double mFinalFitness;
     private final String target;
     private ArrayList<Individual> pop;
     private FitnessEvaluator fitness;
