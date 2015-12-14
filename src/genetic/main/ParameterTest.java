@@ -31,7 +31,9 @@ public class ParameterTest
 		{
 			mGa.Initialize();
 			mGa.evolve();
-			ParameterTest.this.notify();
+			synchronized (ParameterTest.this) {
+				ParameterTest.this.notify();;
+			}
 		}
 		
 		public DataSet getData()
@@ -191,7 +193,9 @@ public class ParameterTest
 			for (int cRepetitions = 0; cRepetitions < mRepetitions; ++cRepetitions)
 			{
 				launchThreads (threads, mRepetitions - cRepetitions);
-				wait();
+				synchronized (this) {
+					wait();
+				}
 				cleanUpThreads(threads, temp);
 			}
 			
@@ -212,7 +216,7 @@ public class ParameterTest
 		{
 			threads.add (new Runner (constructGA()));
 			--remainingRepetitions;
-			threads.get(threads.size()).startThread();
+			threads.get(threads.size() - 1).startThread();
 		}
 	}
 	

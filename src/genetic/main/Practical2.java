@@ -53,13 +53,15 @@ public class Practical2 {
 		EvaluatorFactory evaluatorFactory = new EvaluatorFactory(target);
 		ArrayList<FitnessEvaluator> evaluators = new ArrayList<FitnessEvaluator>();
 		evaluators.add(evaluatorFactory.getEvaluator(EvaluatorFactory.Type.LIN_EDIT_DIST));
-		evaluators.add(evaluatorFactory.getEvaluator(EvaluatorFactory.Type.NONLIN_EDIT_DIST));
+		//evaluators.add(evaluatorFactory.getEvaluator(EvaluatorFactory.Type.NONLIN_EDIT_DIST));
 
 		paramTest.setEvaluators(evaluators);
 
 
 		ArrayList<PopProcessor> processes = new ArrayList<PopProcessor>();
-		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.UNIFORM),
+		processes.add(new RandPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.CONSTANT),
+				new HalfRecombinator()));
+		/*processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.UNIFORM),
 				new AlternatingRecombinator(), 20));
 		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.FITNESS),
 				new AlternatingRecombinator(), 20));
@@ -77,7 +79,7 @@ public class Practical2 {
 				new SingletonRecombinator(), 20));
 		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.CONSTANT),
 				new SingletonRecombinator(), 20));
-
+*/
 		paramTest.setProcessors(processes);
 
 		ArrayList<Selector> selectors = new ArrayList<Selector>();
@@ -92,8 +94,8 @@ public class Practical2 {
 		ArrayList<Integer> popSizes = new ArrayList<Integer>();
 
 		popSizes.add(100);
-		popSizes.add(500);
-		popSizes.add(1000);
+		//popSizes.add(500);
+		//popSizes.add(1000);
 		paramTest.setPopSizes(popSizes);
 
 
@@ -101,9 +103,9 @@ public class Practical2 {
 		ArrayList<Integer> genSizes = new ArrayList<Integer>();
 
 		genSizes.add(50);
-		genSizes.add(100);
-		genSizes.add(500);
-		genSizes.add(1000);
+		//genSizes.add(100);
+		//genSizes.add(500);
+		//genSizes.add(1000);
 
 		paramTest.setNumGenerations(genSizes);
 
