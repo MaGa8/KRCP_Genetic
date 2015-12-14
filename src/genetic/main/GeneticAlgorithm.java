@@ -42,17 +42,16 @@ public class GeneticAlgorithm {
         alphabet[26] = ' ';
 
         Random generator = new Random(System.currentTimeMillis());
-        Individual[] population = new Individual[populationSize];
+        pop = new ArrayList<Individual>();
         // we initialize the population with random characters
         for (int i = 0; i < populationSize; i++) {
             char[] tempChromosome = new char[target.length()];
-            for (int j = 0; j < target.length(); j++) {
-                tempChromosome[j] = alphabet[generator.nextInt(alphabet.length)]; //choose a random letter in the alphabet
-            }
-            population[i] = new Individual(tempChromosome);
+            for (int j = 0; j < target.length(); j++)
+                tempChromosome[j] = alphabet[generator.nextInt(alphabet.length)]; 
+            pop.add (new Individual(tempChromosome));
         }
 
-        pop = new ArrayList<Individual>(Arrays.asList(population));
+        
     }
 
     public void evolve() {
@@ -60,7 +59,7 @@ public class GeneticAlgorithm {
             for (int i = 0; i < pop.size(); i++)
                 fitness.evaluateFitness(pop.get(i));
 
-            System.out.println("Highest fitness " + pop.get(0).fitness);
+            //System.out.println("Highest fitness " + pop.get(0).fitness);
 
             if (pop.get(0).getChromosome().equals("HELLO WORLD"))
                 System.out.println("Success");
@@ -72,7 +71,7 @@ public class GeneticAlgorithm {
                 if (i.getFitness() > max)
                     max = i.getFitness();
             }
-            System.out.println("Highest fitness after recombination " + max);
+            //System.out.println("Highest fitness after recombination " + max);
 
             selector.select(pop);
             ++numberOfGenerations;
