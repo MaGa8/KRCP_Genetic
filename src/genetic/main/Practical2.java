@@ -115,6 +115,7 @@ public class Practical2 {
 		}
 		catch (Exception ex) {
 			System.out.println(ex.getMessage());
+			ex.printStackTrace();
 		}
 
 

@@ -148,35 +148,16 @@ public class ParameterTest
 			throw new IllegalStateException ("not ready for test: generation numbers missing");
 	}
 	
-	public void initializeCounters()
+	public void initializeCounters (Integer[] counters, Integer[] boundaries)
 	{
-		cEvaluator = new Integer (0);
-		cMutator = new Integer (0);
-		cProcessor = new Integer (0);
-		cRecombinator = new Integer (0);
-		cSelector = new Integer (0);
-		cSizes = new Integer (0);
-		cNumGenerations = new Integer (0);
-	}
-	
-	public void runTest() throws InterruptedException
-	{
-		checkForExceptions();
-		initializeCounters();
+		counters[0] = new Integer (0);
+		counters[1] = new Integer (0);
+		counters[2] = new Integer (0);
+		counters[3] = new Integer (0);
+		counters[4] = new Integer (0);
+		counters[5] = new Integer (0);
+		counters[6] = new Integer (0);
 		
-		//ArrayList <Integer> counters, boundaries;
-		Integer[] counters, boundaries;
-		
-		counters = new Integer[7];
-		counters[0] = cEvaluator;
-		counters[1] = cMutator;
-		counters[2] = cProcessor;
-		counters[3] = cRecombinator;
-		counters[4] = cSelector;
-		counters[5] = cSizes;
-		counters[6] = cNumGenerations;
-		
-		boundaries = new Integer[7];
 		boundaries[0] = new Integer (mEvaluators.size());
 		boundaries[1] = new Integer (mMutators.size());
 		boundaries[2] = new Integer (mProcessors.size());
@@ -184,6 +165,27 @@ public class ParameterTest
 		boundaries[4] = new Integer (mSelectors.size());
 		boundaries[5] = new Integer (mPopSizes.size());
 		boundaries[6] = new Integer (mNumGenerations.size());
+	}
+	
+	public void transferCounterRefs (Integer[] counters)
+	{
+		cEvaluator = counters[0];
+		cMutator = counters[1];
+		cProcessor = counters[2];
+		cRecombinator = counters[3];
+		cSelector = counters[4];
+		cSizes = counters[5];
+		cNumGenerations = counters[6];
+	}
+	
+	public void runTest() throws InterruptedException
+	{
+		checkForExceptions();
+		
+		Integer[] counters = new Integer[7];
+		Integer[] boundaries = new Integer[7];
+		initializeCounters (counters, boundaries);
+		transferCounterRefs (counters);
 		
 		boolean allPermutations = false;
 		
@@ -204,7 +206,10 @@ public class ParameterTest
 			mData.add (temp);
 			
 			if (canAdvance (counters, boundaries))
+			{
 				advance (0, counters, boundaries);
+				transferCounterRefs(counters);
+			}
 			else
 				allPermutations = true;
 		}
@@ -240,9 +245,8 @@ public class ParameterTest
 		if (position < counters.length && position < boundaries.length)
 		{
 			Integer counter = counters[position];
-			if (counter.compareTo (boundaries[position]) < 0)
-				counters[position] =  counter + 1;
-			else
+			counters[position] =  counter + 1;
+			if (counters[position].equals (boundaries[position]))
 			{
 				counters[position] = 0;
 				advance (position + 1, counters, boundaries);
