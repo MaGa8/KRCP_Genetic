@@ -31,39 +31,91 @@ public class Practical2 {
 	 */
 	public static void main(String[] args) {
 		
-		int numberOfGenerations = 1000;
-		FitnessEvaluator fitness  = new EditDistance(new Individual(TARGET.toCharArray()));
-		Recombinator recombinator = new HalfRecombinator();
-		//Recombinator recombinator = new AlternatingRecombinator();
-		//Recombinator recombinator = new SingletonRecombinator();
-		//Mutator mutator = new FitnessDepMutator();
-		Mutator mutator = new UniformMutator(0.2);
-		PopProcessor popProc = new RandPopProcessor(mutator, recombinator);
-		//PopProcessor popProc = new ChunkPopProcessor(mutator, recombinator, 5);
-		
-		//Selector selector = new ElitistSelector(100);
-		Selector selector = new DynamicProbSelector(550, 1.5);
-		//Terminator terminator = new FiniteGenerationTerminator(numberOfGenerations);
-		Terminator terminator = new StableSolutionTerminator(500);
+		ParameterTest paramTest = new ParameterTest(TARGET, 500, 20);
+
+		MutatorFactory mutatorFactory = new MutatorFactory(0.1);
+		ArrayList<Mutator> mutators = new ArrayList<Mutator>();
+		mutators.add(mutatorFactory.getMutator(MutatorFactory.Type.UNIFORM));
+		mutators.add(mutatorFactory.getMutator(MutatorFactory.Type.CONSTANT));
+		mutators.add(mutatorFactory.getMutator(MutatorFactory.Type.FITNESS));
+
+		paramTest.setMutators(mutators);
+
+		ArrayList<Recombinator> recombinators = new ArrayList<Recombinator>();
+		recombinators.add(new AlternatingRecombinator());
+		recombinators.add(new HalfRecombinator());
+		recombinators.add(new SingletonRecombinator());
+
+		paramTest.setRecombinators(recombinators);
+
+
+		Individual target = new Individual(TARGET.toCharArray());
+		EvaluatorFactory evaluatorFactory = new EvaluatorFactory(target);
+		ArrayList<FitnessEvaluator> evaluators = new ArrayList<FitnessEvaluator>();
+		evaluators.add(evaluatorFactory.getEvaluator(EvaluatorFactory.Type.LIN_EDIT_DIST));
+		evaluators.add(evaluatorFactory.getEvaluator(EvaluatorFactory.Type.NONLIN_EDIT_DIST));
+
+		paramTest.setEvaluators(evaluators);
+
+
+		ArrayList<PopProcessor> processes = new ArrayList<PopProcessor>();
+		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.UNIFORM),
+				new AlternatingRecombinator(), 20));
+		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.FITNESS),
+				new AlternatingRecombinator(), 20));
+		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.CONSTANT),
+				new AlternatingRecombinator(), 20));
+		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.UNIFORM),
+				new HalfRecombinator(), 20));
+		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.FITNESS),
+				new HalfRecombinator(), 20));
+		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.CONSTANT),
+				new HalfRecombinator(), 20));
+		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.UNIFORM),
+				new SingletonRecombinator(), 20));
+		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.FITNESS),
+				new SingletonRecombinator(), 20));
+		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.CONSTANT),
+				new SingletonRecombinator(), 20));
+
+		paramTest.setProcessors(processes);
+
+		ArrayList<Selector> selectors = new ArrayList<Selector>();
+
+		selectors.add(new DynamicProbSelector(500, 1.5));
+		selectors.add(new ElitistSelector(500));
+		selectors.add(new GaussianProbSelector(1.5));
+		selectors.add(new UniformProbSelector(1.5));
+
+		paramTest.setSelectors(selectors);
+
+		ArrayList<Integer> popSizes = new ArrayList<Integer>();
+
+		popSizes.add(100);
+		popSizes.add(500);
+		popSizes.add(1000);
+		paramTest.setPopSizes(popSizes);
 
 
 
-		GeneticAlgorithm ga = new GeneticAlgorithm(numberOfGenerations,
-													1000,
-													TARGET,
-													fitness,
-													popProc,
-													selector,
-													terminator
-													);
-		ga.Initialize();
-		ga.printPop();
-		ga.evolve();
-		System.out.println();
-		System.out.println ("After");
-		// What does your population look like?
-		ga.printPop();
-		System.out.println (ga.getGenerationsNeeded() + " generations");
+		ArrayList<Integer> genSizes = new ArrayList<Integer>();
+
+		genSizes.add(50);
+		genSizes.add(100);
+		genSizes.add(500);
+		genSizes.add(1000);
+
+		paramTest.setNumGenerations(genSizes);
+
+
+		try {
+			paramTest.runTest();
+		}
+		catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+
+
 
 
 		// do your own cool GA here
