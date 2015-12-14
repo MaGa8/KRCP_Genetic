@@ -1,5 +1,6 @@
 package genetic.main;
 
+import java.rmi.server.ExportException;
 import java.util.*;
 import java.io.*;
 
@@ -56,9 +57,9 @@ public class ParameterTest
 			mParamDescription = ga.getParamDescription();
 		}
 		
-		private int mGenerationsNeeded;
-		private double mFinalFitness;
-		private String mParamDescription;
+		public final int mGenerationsNeeded;
+		public final double mFinalFitness;
+		public final String mParamDescription;
 	}
 	
 	
@@ -67,6 +68,7 @@ public class ParameterTest
 		mTarget = target;
 		mStableGens = stableGens;
 		mRepetitions = repetitions;
+		mData = new ArrayList <ArrayList <DataSet>>();
 	}
 	
 	public boolean canAdvance (ArrayList <Integer> counters, ArrayList <Integer> boundaries)
@@ -182,7 +184,6 @@ public class ParameterTest
 		
 		boolean allPermutations = false;
 		
-		ArrayList <ArrayList <DataSet>> data = new ArrayList <ArrayList <DataSet>>();
 		LinkedList <Runner> threads = new LinkedList <Runner>();
 		while (!allPermutations)
 		{
@@ -194,7 +195,7 @@ public class ParameterTest
 				cleanUpThreads(threads, temp);
 			}
 			
-			data.add (temp);
+			mData.add (temp);
 			
 			if (canAdvance (counters, boundaries))
 				advance (0, counters, boundaries);
@@ -243,10 +244,42 @@ public class ParameterTest
 		}
 	}
 	
-	public void writeToCSV (File csvFile)
+	public void writeToCSV (File csvFile) throws IOException
 	{
+		if (!csvFile.exists())
+			csvFile.createNewFile();
 		
+		BufferedWriter bw = new BufferedWriter (new FileWriter (csvFile));
+		bw.write("");
+		bw.append ("Setup description,");
+		for (int cRepetition = 0; cRepetition < mRepetitions; ++cRepetition)
+			bw.append ("run " + cRepetition + ",,");
+		bw.append ("average generations,average final fitness\n");
+		
+		double totalAverageGenerations = 0, totalAverageFinalFitness = 0;
+		for (ArrayList <DataSet> setup : mData)
+		{
+			double averageGenerations = 0, averageFinalFitness = 0;
+			for (DataSet dataSet : setup)
+			{
+				bw.append (dataSet.mParamDescription + "," + dataSet.mGenerationsNeeded + "," + dataSet.mFinalFitness + ",");
+				averageGenerations += dataSet.mGenerationsNeeded;
+				averageFinalFitness += dataSet.mFinalFitness;
+			}
+			averageGenerations /= mRepetitions;
+			averageFinalFitness /= mRepetitions;
+			totalAverageGenerations += averageGenerations;
+			totalAverageFinalFitness += averageFinalFitness;
+			
+			bw.append (averageGenerations + "," + averageFinalFitness + "\n");
+		}
+		
+		for (int cSkip = 0; cSkip < 1 + 2 * mRepetitions; ++cSkip)
+			bw.append (",");
+		bw.append (totalAverageGenerations + "," + totalAverageFinalFitness + "\n");
 	}
+	
+	private ArrayList <ArrayList <DataSet>> mData;
 	
 	private ArrayList <FitnessEvaluator> mEvaluators;
 	private ArrayList <Mutator> mMutators;
