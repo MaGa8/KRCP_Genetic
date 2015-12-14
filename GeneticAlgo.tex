@@ -53,7 +53,7 @@ Because the above mentionned models are very abstract we now define the concrete
 \subsubsection{Selectors}
 \begin{enumerate}
  \item Elitist selection sorts the list of individuals and discards the least performing individuals exceeding the size of the population.
- \item Probabilistic selection selects an individual based on a probability proportional to the individual's fitness value.
+ \item Probabilistic selection selects an individual based on a probability proportional to the individual's fitness value normalized to the maximum and to the minimum fitness found in the population.
     \subitem Uniform probabilistic selection uses a uniform distribution.
     \subitem Normal probabilistic selection uses a normal distribution. For this model individuals performing better than average have a higher chance of surviving as opposed to the previous model, whereas individuals with a lower than average fitness value are even more likely to be discarded.
   \item Dynamic probabilistic selection uses a uniform distribution. Additionally it increases the likelyhood for every individual not to be eliminated as the size of the population approaches a threshold. If the population falls below the threshold no individuals will be eliminated.
@@ -82,5 +82,7 @@ According to the data we collected we could observe that the resulting quality o
 \subsection{Use of mutators}
 As the data shows, the uniform mutator made the algorithm converge much faster than the others. However its result is by far inferior in quality than the result's of the other mutators, which are largely similar. This can be explained easily, since the uniform mutator only changes one gene at a time at a constant rate which is the same for each individual. This means individuals with high fitness are changed as much as any other, possibly not improving their fitness. It also means that individual with very low fitness are not changed enough in order to evolve quickly to gain higher fitness.
 \subsection{Size of the starting population}
+As the data shows, the initial population size did not affect the results of the algorithm in a meaningful way. It is noteworthy however that a much lower population would have led to inferior results, as the starting population would not have been diverse enough. This shows that an increase of the population size is only beneficial at the very low end of the scale.
+
 
 \end{document}
