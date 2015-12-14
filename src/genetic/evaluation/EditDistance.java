@@ -3,7 +3,7 @@ import genetic.main.Individual;
 
 
 /**
- * @author martin
+ * @author Martin
  * computes edit distance between target and parameter
  */
 public class EditDistance extends FitnessEvaluator 
