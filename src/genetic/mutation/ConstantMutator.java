@@ -12,6 +12,11 @@ public class ConstantMutator extends Mutator
 	public ConstantMutator(double mutationRate) {
 		this.mutationRate = mutationRate;
 	}
+	
+	public String toString()
+	{
+		return new String ("constant mutator at rate = " + mutationRate);
+	}
 
 	public void mutate(Individual i)
 	{

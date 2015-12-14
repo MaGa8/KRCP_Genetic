@@ -25,14 +25,13 @@ public class GeneticAlgorithm {
     }
 	
 	public GeneticAlgorithm(int populationSize,
-                            int numberOfGenerations,
                             String target,
                             FitnessEvaluator fitness,
                             PopProcessor processor,
                             Selector selector,
                             Terminator terminator) {
         this.populationSize = populationSize;
-        this.numberOfGenerations = numberOfGenerations;
+        this.numberOfGenerations = 0;
         this.target = target;
         this.fitness = fitness;
         this.processor = processor;

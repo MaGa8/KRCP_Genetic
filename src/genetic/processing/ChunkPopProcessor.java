@@ -15,6 +15,11 @@ public class ChunkPopProcessor extends RandPopProcessor {
 		super(mut, recomb);
 		mNumChunks = numChunks;
 	}
+	
+	public String toString()
+	{
+		return new String("Chunk processor chunks = " + mNumChunks);
+	}
 
 	/**
 	 * @param pop population

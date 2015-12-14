@@ -1,0 +1,20 @@
+population size 50 average gens/fit = 577.06 0.9163636363636362
+population size 75 average gens/fit = 573.9 0.929090909090909
+population size 100 average gens/fit = 582.5 0.9309090909090907
+population size 125 average gens/fit = 557.2 0.9090909090909091
+population size 150 average gens/fit = 593.54 0.9563636363636364
+population size 175 average gens/fit = 580.12 0.9490909090909089
+population size 200 average gens/fit = 561.96 0.927272727272727
+population size 225 average gens/fit = 574.82 0.9327272727272726
+population size 250 average gens/fit = 599.98 0.9418181818181816
+population size 275 average gens/fit = 586.4 0.9327272727272722
+population size 300 average gens/fit = 556.82 0.9218181818181819
+population size 325 average gens/fit = 588.42 0.9454545454545452
+population size 350 average gens/fit = 577.56 0.9399999999999998
+population size 375 average gens/fit = 578.64 0.9363636363636363
+population size 400 average gens/fit = 575.72 0.9472727272727269
+population size 425 average gens/fit = 578.2 0.929090909090909
+population size 450 average gens/fit = 612.64 0.9472727272727272
+population size 475 average gens/fit = 535.88 0.9054545454545455
+population size 500 average gens/fit = 585.78 0.9345454545454543
+

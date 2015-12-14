@@ -14,6 +14,11 @@ public class UniformMutator extends Mutator
 		mThreshold = threshold;
 	}
 	
+	public String toString()
+	{
+		return new String("uniform mutator at rate " + mThreshold);
+	}
+	
 	/**
 	 * If threshold is exceeded random gene is picked and mutated (assigned another random value)
 	 * @param i individual to mutate

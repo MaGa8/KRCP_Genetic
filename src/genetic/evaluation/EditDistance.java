@@ -16,6 +16,11 @@ public class EditDistance extends FitnessEvaluator
 		mTarget = target;
 	}
 	
+	public String toString()
+	{
+		return new String ("Edit distance");
+	}
+	
 	/**
 	 * @param i individual whose fitness is to be computed
 	 * Computes fitness of i

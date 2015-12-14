@@ -18,6 +18,7 @@ public abstract class FitnessEvaluator
 			i.setFitness (newFitVal);
 	}
 	
+	
 	public abstract double computeFitness (Individual i);
 	
 }

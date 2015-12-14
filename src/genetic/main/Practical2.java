@@ -29,8 +29,16 @@ public class Practical2 {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
+		//testMutationRate (50);
+		//testPopSize (50);
+		//testRecombinator(50);
+		//testMutator(50);
+		testProcessor(50);
 		
+		
+		/*
 		ParameterTest paramTest = new ParameterTest(TARGET, 10, 5);
 
 		MutatorFactory mutatorFactory = new MutatorFactory(0.1);
@@ -44,7 +52,7 @@ public class Practical2 {
 		ArrayList<Recombinator> recombinators = new ArrayList<Recombinator>();
 		recombinators.add(new AlternatingRecombinator());
 		recombinators.add(new HalfRecombinator());
-		recombinators.add(new SingletonRecombinator());
+		//recombinators.add(new SingletonRecombinator());
 
 		paramTest.setRecombinators(recombinators);
 
@@ -61,7 +69,7 @@ public class Practical2 {
 		ArrayList<PopProcessor> processes = new ArrayList<PopProcessor>();
 		processes.add(new RandPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.CONSTANT),
 				new HalfRecombinator()));
-		/*processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.UNIFORM),
+		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.UNIFORM),
 				new AlternatingRecombinator(), 20));
 		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.FITNESS),
 				new AlternatingRecombinator(), 20));
@@ -79,15 +87,15 @@ public class Practical2 {
 				new SingletonRecombinator(), 20));
 		processes.add(new ChunkPopProcessor(mutatorFactory.getMutator(MutatorFactory.Type.CONSTANT),
 				new SingletonRecombinator(), 20));
-*/
+
 		paramTest.setProcessors(processes);
 
 		ArrayList<Selector> selectors = new ArrayList<Selector>();
 
 		selectors.add(new DynamicProbSelector(500, 1.5));
 		selectors.add(new ElitistSelector(500));
-		selectors.add(new GaussianProbSelector(1.5));
-		selectors.add(new UniformProbSelector(1.5));
+		//selectors.add(new GaussianProbSelector(1.5));
+		//selectors.add(new UniformProbSelector(1.5));
 
 		paramTest.setSelectors(selectors);
 
@@ -117,8 +125,7 @@ public class Practical2 {
 			System.out.println(ex.getMessage());
 			ex.printStackTrace();
 		}
-
-
+*/
 
 
 		// do your own cool GA here
@@ -149,5 +156,227 @@ public class Practical2 {
 		*/
 	}
 	
-
+	public static void testMutationRate (int repeat)
+	{
+		int popSize = 250;
+		String targetString = new String ("HELLO WORLD");
+		FitnessEvaluator eval = new EditDistance(new Individual (targetString.toCharArray()));
+		Selector select = new DynamicProbSelector(100, 2);
+		Terminator terminate = new StableSolutionTerminator(250);
+		Recombinator recombine = new HalfRecombinator();
+		
+		for (double cMutRate = 0.05; cMutRate <= 0.75; cMutRate += 0.025)
+		{
+			Mutator mut = new ConstantMutator(cMutRate);
+			
+			PopProcessor proc = new RandPopProcessor(mut, recombine);
+			
+			GeneticAlgorithm ga = new GeneticAlgorithm(	popSize, 
+														targetString, 
+														eval, 
+														proc, 
+														select, 
+														terminate);
+			
+			double avGens = 0, avFit = 0;
+			for (int cRepeat = 0; cRepeat < repeat; ++cRepeat)
+			{
+				ga.Initialize();
+				ga.evolve();
+				avGens += ga.getGenerationsNeeded();
+				avFit += ga.getFinalFitness();
+			}
+			avGens /= repeat;
+			avFit /= repeat;
+			System.out.println ("mutation rate " + cMutRate + " average gens/fit = " + avGens + " " + avFit);
+		}
+	}
+	
+	public static void testPopSize (int repeat)
+	{
+		double mutationRate = 0.18;
+		String targetString = new String ("HELLO WORLD");
+		FitnessEvaluator eval = new EditDistance(new Individual (targetString.toCharArray()));
+		Selector select = new DynamicProbSelector(100, 2);
+		Terminator terminate = new StableSolutionTerminator(250);
+		Recombinator recombine = new HalfRecombinator();
+		
+		for (int cPop = 50; cPop <= 500; cPop += 25)
+		{
+			Mutator mut = new ConstantMutator(mutationRate);
+			
+			PopProcessor proc = new RandPopProcessor(mut, recombine);
+			
+			GeneticAlgorithm ga = new GeneticAlgorithm(	cPop, 
+														targetString, 
+														eval, 
+														proc, 
+														select, 
+														terminate);
+			
+			double avGens = 0, avFit = 0;
+			for (int cRepeat = 0; cRepeat < repeat; ++cRepeat)
+			{
+				ga.Initialize();
+				ga.evolve();
+				avGens += ga.getGenerationsNeeded();
+				avFit += ga.getFinalFitness();
+			}
+			avGens /= repeat;
+			avFit /= repeat;
+			System.out.println ("population size " + cPop + " average gens/fit = " + avGens + " " + avFit);
+		}
+	}
+	
+	public static void testRecombinator (int repeat)
+	{
+		double mutationRate = 0.18;
+		int popSize = 250;
+		String targetString = new String ("HELLO WORLD");
+		FitnessEvaluator eval = new EditDistance(new Individual (targetString.toCharArray()));
+		Selector select = new DynamicProbSelector(100, 2);
+		Terminator terminate = new StableSolutionTerminator(250);
+		
+		String des = null;
+		for (int cRecombine = 0; cRecombine < 2; ++cRecombine)
+		{
+			Recombinator recombine = null;
+			
+			switch (cRecombine)
+			{
+			case 0: recombine = new HalfRecombinator();
+					des = new String ("crossover");
+			break;
+			case 1: recombine = new AlternatingRecombinator();
+					des = new String ("alternating");
+			}
+			
+			Mutator mut = new ConstantMutator(mutationRate);
+			
+			PopProcessor proc = new RandPopProcessor(mut, recombine);
+			
+			GeneticAlgorithm ga = new GeneticAlgorithm(	popSize, 
+														targetString, 
+														eval, 
+														proc, 
+														select, 
+														terminate);
+			
+			double avGens = 0, avFit = 0;
+			for (int cRepeat = 0; cRepeat < repeat; ++cRepeat)
+			{
+				ga.Initialize();
+				ga.evolve();
+				avGens += ga.getGenerationsNeeded();
+				avFit += ga.getFinalFitness();
+			}
+			avGens /= repeat;
+			avFit /= repeat;
+			System.out.println ("recombinator " + des + " average gens/fit = " + avGens + " " + avFit);
+		}
+	}
+	
+	public static void testMutator (int repeat)
+	{
+		double mutationRate = 0.18;
+		int popSize = 250;
+		String targetString = new String ("HELLO WORLD");
+		FitnessEvaluator eval = new EditDistance(new Individual (targetString.toCharArray()));
+		Selector select = new DynamicProbSelector(100, 2);
+		Recombinator recombine = new HalfRecombinator();
+		Terminator terminate = new StableSolutionTerminator(250);
+		
+		String des = null;
+		for (int cMutate = 0; cMutate < 3; ++cMutate)
+		{
+			Mutator mut = null;
+			
+			switch (cMutate)
+			{
+			case 0: mut = new ConstantMutator(0.18);
+					des = "constant mutator";
+					break;
+			case 1: mut = new UniformMutator(0.18);
+					des = "uniform mutator";
+					break;
+			case 2: mut = new FitnessDepMutator();
+					des = "fitness dependent mutator";
+					break;
+			}
+			
+			
+			
+			PopProcessor proc = new RandPopProcessor(mut, recombine);
+			
+			GeneticAlgorithm ga = new GeneticAlgorithm(	popSize, 
+														targetString, 
+														eval, 
+														proc, 
+														select, 
+														terminate);
+			
+			double avGens = 0, avFit = 0;
+			for (int cRepeat = 0; cRepeat < repeat; ++cRepeat)
+			{
+				ga.Initialize();
+				ga.evolve();
+				avGens += ga.getGenerationsNeeded();
+				avFit += ga.getFinalFitness();
+			}
+			avGens /= repeat;
+			avFit /= repeat;
+			System.out.println ("mutator " + des + " average gens/fit = " + avGens + " " + avFit);
+		}
+	}
+	
+	public static void testProcessor (int repeat)
+	{
+		double mutationRate = 0.18;
+		int popSize = 250;
+		String targetString = new String ("HELLO WORLD");
+		FitnessEvaluator eval = new EditDistance(new Individual (targetString.toCharArray()));
+		Selector select = new DynamicProbSelector(100, 2);
+		Recombinator recombine = new HalfRecombinator();
+		Terminator terminate = new StableSolutionTerminator(250);
+		
+		String des = null;
+		for (int cMutate = 0; cMutate < 2; ++cMutate)
+		{
+			Mutator mut = new FitnessDepMutator();
+			PopProcessor proc = null;
+			
+			switch (cMutate)
+			{
+			case 0: proc = new RandPopProcessor(mut, recombine);
+							des = "Random";
+			break;
+			case 1: proc = new ChunkPopProcessor(mut, recombine, 10);
+							des = "chunk";
+			break;
+			}
+			
+			
+			
+			
+			
+			GeneticAlgorithm ga = new GeneticAlgorithm(	popSize, 
+														targetString, 
+														eval, 
+														proc, 
+														select, 
+														terminate);
+			
+			double avGens = 0, avFit = 0;
+			for (int cRepeat = 0; cRepeat < repeat; ++cRepeat)
+			{
+				ga.Initialize();
+				ga.evolve();
+				avGens += ga.getGenerationsNeeded();
+				avFit += ga.getFinalFitness();
+			}
+			avGens /= repeat;
+			avFit /= repeat;
+			System.out.println ("recombinator " + des + " average gens/fit = " + avGens + " " + avFit);
+		}
+	}
 }

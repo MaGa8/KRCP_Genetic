@@ -40,6 +40,8 @@ public class StableSolutionTerminator implements Terminator
 				mBest = pop.get (0);
 			}
 		}
+		else
+			return true;
 		return false;
 	}
 	

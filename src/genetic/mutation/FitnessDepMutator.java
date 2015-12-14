@@ -6,6 +6,11 @@ import java.lang.reflect.GenericArrayType;
 
 public class FitnessDepMutator extends Mutator
 {
+	
+	public String toString()
+	{
+		return new String("fitness dependent mutator");
+	}
 	/**
 	 * @param i individual to modify
 	 * Mutates random gene (assigning random value of alphabet) if 

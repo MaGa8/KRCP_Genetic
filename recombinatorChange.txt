@@ -1,0 +1,3 @@
+recombinator crossover average gens/fit = 583.02 0.9436363636363635
+recombinator alternating average gens/fit = 571.3 0.9145454545454542
+
